@@ -1,0 +1,249 @@
+<html>
+<head>
+    <style>
+    body{margin:0}
+        #checker-board {
+            width: 400px;
+            height: 400px;
+            background-color: #ffbc00;
+            border: 10px solid rgba(0,0,0,0.65);
+            border-radius: 10px;
+            position: relative;
+        }
+        .square {
+            width: 50px;
+            height: 50px;
+            float: left;
+        }
+        .dark { background-color: rgba(0,0,0,0.25); }
+        .light { background-color: rgba(255,255,255,0.25); }
+        .checker {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            position: absolute;
+        }
+        .red { background-color: red; }
+        .black { background-color: black; }
+    </style>
+</head>
+<body>
+<div id="checker-board">
+    <div class="dark square"></div>
+    <div id="boo" class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+    <div class="light square"></div>
+    <div class="dark square"></div>
+
+    <div class="black checker" id="black-checker-1"></div>
+    <div class="black checker" id="black-checker-2"></div>
+    <div class="black checker" id="black-checker-3"></div>
+    <div class="black checker" id="black-checker-4"></div>
+    <div class="black checker" id="black-checker-5"></div>
+    <div class="black checker" id="black-checker-6"></div>
+    <div class="black checker" id="black-checker-7"></div>
+    <div class="black checker" id="black-checker-8"></div>
+    <div class="black checker" id="black-checker-9"></div>
+    <div class="black checker" id="black-checker-10"></div>
+    <div class="black checker" id="black-checker-11"></div>
+    <div class="black checker" id="black-checker-12"></div>
+    <div class="red checker" id="red-checker-1"></div>
+    <div class="red checker" id="red-checker-2"></div>
+    <div class="red checker" id="red-checker-3"></div>
+    <div class="red checker" id="red-checker-4"></div>
+    <div class="red checker" id="red-checker-5"></div>
+    <div class="red checker" id="red-checker-6"></div>
+    <div class="red checker" id="red-checker-7"></div>
+    <div class="red checker" id="red-checker-8"></div>
+    <div class="red checker" id="red-checker-9"></div>
+    <div class="red checker" id="red-checker-10"></div>
+    <div class="red checker" id="red-checker-11"></div>
+    <div class="red checker" id="red-checker-12"></div>
+
+</div>
+
+<script>
+    'use strict';
+    var board = document.getElementById('checker-board');
+    var redCheckers = [];
+    var blackCheckers = [];
+    for (var i = 1; i <= 12; i = i + 1) {
+        var redChecker = document.getElementById('red-checker-' + i);
+        var blackChecker = document.getElementById('black-checker-' + i);
+        var col = (i - 1) % 4;
+        var row = Math.floor((i - 1) / 4);
+        redChecker.style.top = 50 + 50 * row - 45;
+        redChecker.style.left = 100 + 100 * col - 95 + (row === 1 ? 50 : 0);
+        blackChecker.style.top = 310 - (50 * row - 45);
+        blackChecker.style.left = 100 + 100 * col - 95 + (row !== 1 ? 50 : 0);
+        redCheckers.push(redChecker);
+        blackCheckers.push(blackChecker);
+    }
+    ////////////////////////////////////////////////////////
+    var stepAvalable=0;
+	var selectedChecker=0;
+	var shadowGarbage=[];
+	//var selectedChecker;
+    board.onclick=function (event) {    	
+    	var curElem=event.target;
+    	if(shadowGarbage.length)
+    	{
+    		shadowGarbage.forEach(function(element){
+    			element.style.boxShadow = "";
+    		})
+    		//stepAvalable=0;
+    	}
+
+		if(stepAvalable){
+			var x=Number(selectedChecker.style.left.slice(0,-2));
+        	var y=Number(selectedChecker.style.top.slice(0,-2)); 
+			if((event.pageX-x)>25 && (event.pageX-x)<50){
+				//alert(x);
+				 selectedChecker.style.top = y-50+"px";
+				 selectedChecker.style.left = x+50+"px";
+			}
+		}
+
+        
+        if(curElem.id.slice(0,3)=="bla"){
+        if(selectedChecker) {
+            selectedChecker.style.border = "";
+        }
+        curElem.style.border="1px solid white";
+        selectedChecker=curElem;
+        var x=selectedChecker.style.left.slice(0,-2);
+        var y=selectedChecker.style.top.slice(0,-2);       
+       	if(canGo(x,y,"rightTop")){
+       		shadowGarbage.push(document.elementFromPoint(Number(x)+10+50,Number(y)+10-50));
+	       	document.elementFromPoint(Number(x)+10+50,Number(y)+10-50).style.boxShadow = "#ffffff 0px 0px 19px 3px";
+	       	++stepAvalable;
+	    }
+       	if(canGo(x,y,"leftTop")){
+       		shadowGarbage.push(	document.elementFromPoint(Number(x)+10-50,Number(y)+10-50));
+       	    document.elementFromPoint(Number(x)+10-50,Number(y)+10-50).style.boxShadow = "#ffffff 0px 0px 19px 3px";
+       	    ++stepAvalable;
+        }
+			}
+    }
+   
+    function canGo(x0,y0,pos)
+    {
+    	if(pos=="rightTop")
+    	{
+    		if(Number(x0)==355)return false;
+    		return ((!viewFild(Number(x0)+50,Number(y0)-50,araay_pos_black)) && (!viewFild(Number(x0)+50,Number(y0)-50,araay_pos_red)));
+    	}
+    	if(pos=="leftTop")
+    	{
+    		if(Number(x0)==5)return false;
+    		return (!viewFild(Number(x0)-50,Number(y0)-50,araay_pos_black) && !viewFild(Number(x0)-50,Number(y0)-50,araay_pos_red));
+    }
+    } 
+
+    var araay_pos_black = [];
+    var araay_pos_red = [];
+    function push_elements()
+    {
+    	var red_class = document.getElementsByClassName("red");    	
+    	var black_class = document.getElementsByClassName("black");
+    	for(var i=0;i<12;++i)
+    	{
+    		var pos_top = red_class[i].style.top;
+    		var pos_left = red_class[i].style.left;
+
+    		var pos_top_b = black_class[i].style.top;
+    		var pos_left_b = black_class[i].style.left;
+    		var checkerXY={};
+    		checkerXY.x=pos_left.slice(0,-2);
+    		checkerXY.y=pos_top.slice(0,-2);
+    		var checkerXY_b={};
+    		checkerXY_b.x=pos_left_b.slice(0,-2);
+    		checkerXY_b.y=pos_top_b.slice(0,-2);
+    		araay_pos_black.push(checkerXY_b);
+    	}
+    }   
+    push_elements();
+	   function viewFild(x,y,array)
+	   {
+	   	for(var i=0;i<array.length;++i)
+	   	{
+	   		if(Number(array[i].x)==x && Number(array[i].y)==y)
+	   			return true;	
+	   		
+	   }
+	   return false;
+	}  
+ 	
+   
+
+</script>
+
+
+</body>
+</html>
