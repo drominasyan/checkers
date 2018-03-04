@@ -1,0 +1,46 @@
+.container {
+    width: 640px;
+    height: 640px;
+    background-image: url("Images/board.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;       
+}
+.smile{
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 70px;
+    height: 70px;
+}
+.red_smile{
+    background-image: url("Images/red.png");
+}
+.black_smile{
+    background-image: url("Images/black.png");    
+}
+.row{
+    height: 80px;
+    display: flex;
+}
+.row:nth-child(2n + 1) .black{
+    margin-right: 80px;
+}
+.row:nth-child(2n) .black{
+    flex-direction: row-reverse;
+    margin-left: 80px;
+}
+.black{
+    width:80px;
+    height:80px;
+    background: #512b0fd1;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+
+
+}
